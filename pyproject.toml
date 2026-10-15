@@ -1,0 +1,40 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pic2pic"
+version = "0.1.0"
+description = "学习二次元图片风格，反推结构化提示词（风格卡），后续生成同风格新图"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+dependencies = ["pillow>=10"]
+
+[project.optional-dependencies]
+# WD14 标签器（ONNX，CPU/GPU 均可）
+tagger = ["numpy>=1.26", "onnxruntime>=1.18", "huggingface_hub>=0.23"]
+# Qwen-VL 补充描述（需要 PyTorch，5070 Ti 请装 CUDA 12.8+ 版本）
+vlm = ["transformers>=4.49", "accelerate>=0.33", "torch>=2.7"]
+ui = ["gradio>=4.40"]
+dev = ["pytest>=8", "ruff>=0.5"]
+
+[project.scripts]
+pic2pic = "pic2pic.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.isort]
+known-first-party = ["pic2pic"]
